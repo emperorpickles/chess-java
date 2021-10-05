@@ -10,11 +10,12 @@ public class ChessGame extends JFrame {
     }
 
     private void initUI() {
-        add(new Board());
+        Board board = new Board();
+        add(new Renderer(board));
 
         setSize(Settings.boardWidth + 17, Settings.boardHeight + 40);
-
         setTitle("ChessGame");
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
