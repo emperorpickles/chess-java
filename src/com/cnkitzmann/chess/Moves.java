@@ -3,10 +3,15 @@ package com.cnkitzmann.chess;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static java.lang.Math.abs;
+
 public class Moves {
     private static ArrayList<Point> validMoves;
     private Board b;
     private Piece p;
+
+    Point[] diagonals = {new Point(1,1), new Point(-1,1), new Point(-1,-1), new Point(1,-1)};
+    Point[] lines = {new Point(1,0), new Point(0,1), new Point(-1,0), new Point(0,-1)};
 
     public static ArrayList<Point> getValidMoves() {
         return validMoves;
@@ -21,6 +26,10 @@ public class Moves {
         switch (p.getType()) {
             case 'P' -> Pawn();
             case 'K' -> King();
+            case 'Q' -> Queen();
+            case 'B' -> Bishop();
+            case 'N' -> Knight();
+            case 'R' -> Rook();
         }
     }
 
@@ -72,7 +81,50 @@ public class Moves {
     }
 
     private void King() {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                newMove(i, j);
+            }
+        }
+    }
 
+    private void Queen() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 1; j < 8; j++) {
+                newMove(lines[i].x * j, lines[i].y * j);
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 1; j < 8; j++) {
+                newMove(diagonals[i].x * j, diagonals[i].y * j);
+            }
+        }
+    }
+
+    private void Bishop() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 1; j < 8; j++) {
+                newMove(diagonals[i].x * j, diagonals[i].y * j);
+            }
+        }
+    }
+
+    private void Knight() {
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if ((abs(i) + abs(j)) == 3) {
+                    newMove(i, j);
+                }
+            }
+        }
+    }
+
+    private void Rook() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 1; j < 8; j++) {
+                newMove(lines[i].x * j, lines[i].y * j);
+            }
+        }
     }
 
 

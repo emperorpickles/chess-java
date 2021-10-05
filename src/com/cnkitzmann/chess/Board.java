@@ -30,7 +30,8 @@ public class Board {
     }
 
     public Piece getPiece(int x, int y) {
-        return board[x][y];
+        if (x >= 0 && y >= 0 && x < 8 && y < 8) return board[x][y];
+        return null;
     }
 
     public void movePiece(int x, int y, int cx, int cy) {
