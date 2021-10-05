@@ -12,6 +12,7 @@ public class InputAdapter extends MouseAdapter {
 
     private boolean moving = false;
     private Piece toMove;
+    private ArrayList<Point> validMoves;
 
     public InputAdapter(Board board, Renderer renderer) {
         b = board;
@@ -33,21 +34,22 @@ public class InputAdapter extends MouseAdapter {
     }
 
     private void movePiece(Piece piece, int x, int y) {
-        if (moving) {
+        if (!moving) {
+            System.out.println("starting move");
+            toMove = piece;
+            moves.setValidMoves(b, toMove);
+            validMoves = Moves.getValidMoves();
+        } else {
             System.out.println("finishing move");
 
-            ArrayList<Point> validMoves = moves.getValidMoves(b, toMove);
             Point move = new Point(x, y);
-            System.out.println(validMoves);
-
             if (validMoves.contains(move)) {
                 b.movePiece(toMove.getGridX(), toMove.getGridY(), x, y);
                 r.redraw();
             }
-        } else {
-            System.out.println("starting move");
-            toMove = piece;
+            validMoves.clear();
         }
         moving = !moving;
+        r.redraw();
     }
 }

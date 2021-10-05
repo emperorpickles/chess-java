@@ -34,6 +34,7 @@ public class Board {
     }
 
     public void movePiece(int x, int y, int cx, int cy) {
+        board[x][y].setMoved();
         board[x][y].setPos(cx, cy);
         board[cx][cy] = board[x][y];
         board[x][y] = null;

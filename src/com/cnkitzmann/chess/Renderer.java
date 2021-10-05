@@ -3,9 +3,10 @@ package com.cnkitzmann.chess;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 
 public class Renderer extends JPanel {
-    private Board b;
+    private final Board b;
 
     public Renderer(Board board) {
         b = board;
@@ -19,6 +20,7 @@ public class Renderer extends JPanel {
         super.paintComponent(g);
         drawGrid(g);
         drawPiece(g);
+        showMoves(g);
     }
 
     public void redraw() {
@@ -57,6 +59,24 @@ public class Renderer extends JPanel {
                     g2d.fill(new Ellipse2D.Double(piece.getX(), piece.getY(), Settings.pieceSize, Settings.pieceSize));
                     g2d.drawString(String.valueOf(piece.getType()), piece.getX(), piece.getY());
                 }
+            }
+        }
+    }
+
+    public void showMoves(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        ArrayList<Point> validMoves = Moves.getValidMoves();
+        double pointSize = Settings.pieceSize * 0.6;
+
+        if (validMoves != null) {
+            for (Point move : validMoves) {
+                System.out.println(move);
+                g2d.setPaint(new Color(20, 200, 20, 60));
+                g2d.fill(new Ellipse2D.Double(
+                        (move.x * Settings.tileSize) + (double)(Settings.tileSize / 2) - (pointSize / 2),
+                        (move.y * Settings.tileSize) + (double)(Settings.tileSize / 2) - (pointSize / 2),
+                        pointSize, pointSize
+                ));
             }
         }
     }
