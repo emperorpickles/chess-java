@@ -44,23 +44,21 @@ public class Moves {
         return false;
     }
 
-    private boolean isValid(int x, int y) {
-        if (inBounds(x, y)) {
-            if (b.getPiece(x, y) != null) {
-                return canTake(x, y);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    private void newMove(int x, int y) {
+    private boolean newMove(int x, int y) {
         x = p.getGridX() + x;
         y = p.getGridY() + y;
 
-        if (isValid(x, y)) {
-            validMoves.add(new Point(x, y));
+        if (inBounds(x, y)) {
+            if (b.getPiece(x, y) != null) {
+                if (canTake(x, y)) {
+                    validMoves.add(new Point(x, y));
+                }
+                return true;
+            } else {
+                validMoves.add(new Point(x, y));
+            }
         }
+        return false;
     }
 
     //    methods for each piece
@@ -70,8 +68,7 @@ public class Moves {
             dir = -1;
         }
 
-        newMove(0, dir);
-        if (!p.getMoved()) {
+        if (!newMove(0, dir) && !p.getMoved()) {
             newMove(0, 2 * dir);
         }
         if (b.getPiece(p.getGridX() - 1, p.getGridY() + dir) != null) newMove(-1, dir);
@@ -91,12 +88,12 @@ public class Moves {
     private void Queen() {
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j < 8; j++) {
-                newMove(lines[i].x * j, lines[i].y * j);
+                if(newMove(lines[i].x * j, lines[i].y * j)) break;
             }
         }
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j < 8; j++) {
-                newMove(diagonals[i].x * j, diagonals[i].y * j);
+                if(newMove(diagonals[i].x * j, diagonals[i].y * j)) break;
             }
         }
     }
@@ -104,7 +101,7 @@ public class Moves {
     private void Bishop() {
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j < 8; j++) {
-                newMove(diagonals[i].x * j, diagonals[i].y * j);
+                if(newMove(diagonals[i].x * j, diagonals[i].y * j)) break;
             }
         }
     }
@@ -122,7 +119,7 @@ public class Moves {
     private void Rook() {
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j < 8; j++) {
-                newMove(lines[i].x * j, lines[i].y * j);
+                if(newMove(lines[i].x * j, lines[i].y * j)) break;
             }
         }
     }
