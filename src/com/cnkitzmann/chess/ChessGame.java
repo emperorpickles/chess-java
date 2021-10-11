@@ -13,7 +13,7 @@ public class ChessGame extends JFrame {
         Board board = new Board();
         add(new Renderer(board));
 
-        setSize(Settings.boardWidth + 17, Settings.boardHeight + 40);
+        setSize(Settings.gameWidth + 17, Settings.gameHeight + 40);
         setTitle("ChessGame");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

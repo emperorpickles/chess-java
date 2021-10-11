@@ -36,14 +36,14 @@ public class MoveHandler {
 
         ArrayList<Point> movePoints = new ArrayList<>();
         for (Move move : moves) {
-            movePoints.add(move.getPoint());
+            movePoints.add(move.getNewPos());
         }
         return movePoints;
     }
 
     public Move getMove(Point point) {
         for (Move move : moves) {
-            if (point.equals(move.getPoint())) {
+            if (point.equals(move.getNewPos())) {
                 return move;
             }
         }
@@ -64,11 +64,11 @@ public class MoveHandler {
         if (inBounds(newPos)) {
             if (b.getPiece(newPos.x, newPos.y) != null) {
                 if (canTake(newPos)) {
-                    moves.add(new Move(b, curPos, newPos, true, castles));
+                    moves.add(new Move(b, p, curPos, newPos, true, castles));
                 }
                 return true;
             } else {
-                moves.add(new Move(b, curPos, newPos, true, castles));
+                moves.add(new Move(b, p, curPos, newPos, false, castles));
             }
         }
         return false;

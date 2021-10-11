@@ -58,6 +58,7 @@ public class MoveRules {
 //        short castles
         if (
                 p.getMoved() &&
+                        b.getPiece(p.getGridX() + 3, p.getGridY()) != null &&
                         b.getPiece(p.getGridX() + 3, p.getGridY()).getMoved() &&
                         b.getPiece(p.getGridX() + 2, p.getGridY()) == null &&
                         b.getPiece(p.getGridX() + 1, p.getGridY()) == null
@@ -67,6 +68,7 @@ public class MoveRules {
 //        long castles
         if (
                 p.getMoved() &&
+                        b.getPiece(p.getGridX() - 4, p.getGridY()) != null &&
                         b.getPiece(p.getGridX() - 4, p.getGridY()).getMoved() &&
                         b.getPiece(p.getGridX() - 3, p.getGridY()) == null &&
                         b.getPiece(p.getGridX() - 2, p.getGridY()) == null &&

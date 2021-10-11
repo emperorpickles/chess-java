@@ -1,27 +1,30 @@
 package com.cnkitzmann.chess.movement;
 
 import com.cnkitzmann.chess.Board;
+import com.cnkitzmann.chess.Piece;
 
 import java.awt.*;
 
 public class Move {
     private final Board b;
+    private final Piece p;
     private final Point curPos;
     private final Point newPos;
     private final boolean takes;
     private final char castles;
 
-    public Move(Board b, Point p, Point dp) {
-        this(b, p, dp, false, ' ');
+    public Move(Board b, Piece p, Point cp, Point dp) {
+        this(b, p, cp, dp, false, ' ');
     }
 
-    public Move(Board b, Point p, Point dp, boolean t) {
-        this(b, p, dp, t, ' ');
+    public Move(Board b, Piece p, Point cp, Point dp, boolean t) {
+        this(b, p, cp, dp, t, ' ');
     }
 
-    public Move(Board b, Point p, Point dp, boolean t, char c) {
+    public Move(Board b, Piece p, Point cp, Point dp, boolean t, char c) {
         this.b = b;
-        this.curPos = p;
+        this.p = p;
+        this.curPos = cp;
         this.newPos = dp;
         this.takes = t;
         this.castles = c;
@@ -36,9 +39,30 @@ public class Move {
         }
 
         b.setTurn();
+        b.updatePGN(this);
     }
 
-    public Point getPoint() {
+    public Point getNewPos() {
         return this.newPos;
+    }
+
+    public Point getCurPos() {
+        return this.curPos;
+    }
+
+    public Piece getPiece() {
+        return this.p;
+    }
+
+    public boolean getWhite() {
+        return this.p.isWhite();
+    }
+
+    public char getCastles() {
+        return this.castles;
+    }
+
+    public boolean getTakes() {
+        return this.takes;
     }
 }

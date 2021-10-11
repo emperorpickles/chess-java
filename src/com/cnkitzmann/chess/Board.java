@@ -1,8 +1,11 @@
 package com.cnkitzmann.chess;
 
+import com.cnkitzmann.chess.movement.Move;
+
 public class Board {
     private final static Piece[][] board = new Piece[8][8];
     private boolean whiteTurn;
+    private NotationHandler notationHandler;
 
     public Board() {
         initBoard();
@@ -11,6 +14,7 @@ public class Board {
     private void initBoard() {
         whiteTurn = true;
         newBoard(Settings.defaultBoard);
+        notationHandler = new NotationHandler();
     }
 
     private void newBoard(String FEN) {
@@ -52,5 +56,13 @@ public class Board {
 
     public void setTurn() {
         whiteTurn = !whiteTurn;
+    }
+
+    public void updatePGN(Move move) {
+        notationHandler.pgnWriter(move);
+    }
+
+    public String getPGN() {
+        return notationHandler.getPGN();
     }
 }

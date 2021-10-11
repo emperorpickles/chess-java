@@ -6,6 +6,6 @@ public class Settings {
     public final static int tileSize = 120;
     public final static int pieceSize = 70;
 
-    public final static int boardWidth = tileSize * 8;
-    public final static int boardHeight = tileSize * 8;
+    public final static int gameWidth = (tileSize * 8) + 300;
+    public final static int gameHeight = tileSize * 8;
 }

@@ -9,12 +9,17 @@ import java.util.ArrayList;
 
 public class Renderer extends JPanel {
     private final Board b;
+    private JTextArea ta;
 
     public Renderer(Board board) {
         b = board;
 
-        setPreferredSize(new Dimension(Settings.boardWidth, Settings.boardHeight));
+        setPreferredSize(new Dimension(Settings.gameWidth, Settings.gameHeight));
         addMouseListener(new InputAdapter(b, this));
+        ta = new JTextArea();
+        ta.setEditable(false);
+        ta.setLineWrap(true);
+        this.add(ta);
     }
 
     @Override
@@ -22,7 +27,8 @@ public class Renderer extends JPanel {
         super.paintComponent(g);
         drawGrid(g);
         drawPiece(g);
-        showMoves(g);
+        drawPossibleMoves(g);
+        drawPGN(g);
     }
 
     public void redraw() {
@@ -65,7 +71,7 @@ public class Renderer extends JPanel {
         }
     }
 
-    public void showMoves(Graphics g) {
+    private void drawPossibleMoves(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         ArrayList<Point> validMoves = MoveHandler.getMovePoints();
         double pointSize = Settings.pieceSize * 0.6;
@@ -80,5 +86,12 @@ public class Renderer extends JPanel {
                 ));
             }
         }
+    }
+
+    private void drawPGN(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        String pgn = b.getPGN();
+        ta.setBounds(Settings.gameWidth - 280, Settings.gameHeight / 2 - 150, 260, 300);
+        ta.replaceRange(pgn, 0, ta.getText().length());
     }
 }
