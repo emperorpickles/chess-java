@@ -34,6 +34,8 @@ public class Move {
             case 'K' -> b.movePiece(curPos.x + 3, curPos.y, curPos.x + 1, curPos.y);
             case 'Q' -> b.movePiece(curPos.x - 4, curPos.y, curPos.x - 1, curPos.y);
         }
+
+        b.setTurn();
     }
 
     public Point getPoint() {

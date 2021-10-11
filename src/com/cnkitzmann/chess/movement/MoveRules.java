@@ -53,9 +53,8 @@ public class MoveRules {
                 m.newMove(i, j);
             }
         }
-//        TODO -- Add castling
+
 //        if king hasn't moved + rook hasn't moved + no pieces in between
-//
 //        short castles
         if (
                 p.getMoved() &&
@@ -65,7 +64,7 @@ public class MoveRules {
         ) {
             m.newMove(2, 0, 'K');
         }
-
+//        long castles
         if (
                 p.getMoved() &&
                         b.getPiece(p.getGridX() - 4, p.getGridY()).getMoved() &&

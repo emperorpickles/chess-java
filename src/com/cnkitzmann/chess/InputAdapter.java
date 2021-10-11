@@ -29,7 +29,7 @@ public class InputAdapter extends MouseAdapter {
         int gridY = Math.floorDiv(y, Settings.tileSize);
 
         Piece piece = b.getPiece(gridX, gridY);
-        if (piece != null | moving) {
+        if ((piece != null && piece.isWhite() == b.getTurn()) | moving) {
             movePiece(piece, gridX, gridY);
         }
     }
@@ -40,9 +40,7 @@ public class InputAdapter extends MouseAdapter {
             moves.findValidMoves(piece);
         } else {
             System.out.println("finishing move");
-
-            Point move = new Point(x, y);
-            moves.makeMove(move);
+            moves.makeMove(new Point(x, y));
         }
         moving = !moving;
         r.redraw();

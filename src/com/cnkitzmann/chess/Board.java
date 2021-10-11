@@ -2,16 +2,18 @@ package com.cnkitzmann.chess;
 
 public class Board {
     private final static Piece[][] board = new Piece[8][8];
+    private boolean whiteTurn;
 
     public Board() {
         initBoard();
     }
 
     private void initBoard() {
-        newGame(Settings.defaultBoard);
+        whiteTurn = true;
+        newBoard(Settings.defaultBoard);
     }
 
-    private void newGame(String FEN) {
+    private void newBoard(String FEN) {
         String[] ranks = FEN.split("/", 0);
 
         for (int j = 0; j < ranks.length; j++) {
@@ -42,5 +44,13 @@ public class Board {
         board[x][y].setPos(dx, dy);
         board[dx][dy] = board[x][y];
         board[x][y] = null;
+    }
+
+    public boolean getTurn() {
+        return whiteTurn;
+    }
+
+    public void setTurn() {
+        whiteTurn = !whiteTurn;
     }
 }
