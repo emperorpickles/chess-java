@@ -15,15 +15,18 @@ public class Board {
         String[] ranks = FEN.split("/", 0);
 
         for (int j = 0; j < ranks.length; j++) {
+            int x = 0;
             for (int i = 0; i < ranks[j].length(); i++) {
                 char piece = ranks[j].charAt(i);
 
                 if (Character.isDigit(piece)) {
-                    board[i][j] = null;
+                    x += Character.getNumericValue(piece);
                 } else if (Character.isLowerCase(piece)) {
-                    board[i][j] = new Piece(i, j, false, Character.toUpperCase(piece));
+                    board[x][j] = new Piece(x, j, false, Character.toUpperCase(piece));
+                    x++;
                 } else {
-                    board[i][j] = new Piece(i, j, true, piece);
+                    board[x][j] = new Piece(x, j, true, piece);
+                    x++;
                 }
             }
         }
@@ -34,10 +37,10 @@ public class Board {
         return null;
     }
 
-    public void movePiece(int x, int y, int cx, int cy) {
+    public void movePiece(int x, int y, int dx, int dy) {
         board[x][y].setMoved();
-        board[x][y].setPos(cx, cy);
-        board[cx][cy] = board[x][y];
+        board[x][y].setPos(dx, dy);
+        board[dx][dy] = board[x][y];
         board[x][y] = null;
     }
 }

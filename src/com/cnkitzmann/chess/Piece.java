@@ -3,10 +3,10 @@ package com.cnkitzmann.chess;
 import java.awt.*;
 
 public class Piece {
-    private Point renderPos = new Point();
-    private Point gridPos = new Point();
-    private boolean white;
-    private char type;
+    private final Point renderPos = new Point();
+    private final Point gridPos = new Point();
+    private final boolean white;
+    private final char type;
     private boolean moved;
 
     public Piece(int x, int y, boolean isWhite, char t) {
@@ -58,7 +58,7 @@ public class Piece {
     }
 
     public boolean getMoved() {
-        return this.moved;
+        return !this.moved;
     }
 
     public void setMoved() {

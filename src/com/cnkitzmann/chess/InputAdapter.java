@@ -1,22 +1,23 @@
 package com.cnkitzmann.chess;
 
+import com.cnkitzmann.chess.movement.MoveHandler;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 public class InputAdapter extends MouseAdapter {
     private final Board b;
     private final Renderer r;
-    private final Moves moves = new Moves();
+    private final MoveHandler moves;
 
     private boolean moving = false;
-    private Piece toMove;
-    private ArrayList<Point> validMoves;
 
     public InputAdapter(Board board, Renderer renderer) {
         b = board;
         r = renderer;
+
+        moves = new MoveHandler(b);
     }
 
     @Override
@@ -36,18 +37,12 @@ public class InputAdapter extends MouseAdapter {
     private void movePiece(Piece piece, int x, int y) {
         if (!moving) {
             System.out.println("starting move");
-            toMove = piece;
-            moves.setValidMoves(b, toMove);
-            validMoves = Moves.getValidMoves();
+            moves.findValidMoves(piece);
         } else {
             System.out.println("finishing move");
 
             Point move = new Point(x, y);
-            if (validMoves.contains(move)) {
-                b.movePiece(toMove.getGridX(), toMove.getGridY(), x, y);
-                r.redraw();
-            }
-            validMoves.clear();
+            moves.makeMove(move);
         }
         moving = !moving;
         r.redraw();

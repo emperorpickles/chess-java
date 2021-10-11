@@ -1,5 +1,7 @@
 package com.cnkitzmann.chess;
 
+import com.cnkitzmann.chess.movement.MoveHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -65,12 +67,11 @@ public class Renderer extends JPanel {
 
     public void showMoves(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        ArrayList<Point> validMoves = Moves.getValidMoves();
+        ArrayList<Point> validMoves = MoveHandler.getMovePoints();
         double pointSize = Settings.pieceSize * 0.6;
 
         if (validMoves != null) {
             for (Point move : validMoves) {
-                System.out.println(move);
                 g2d.setPaint(new Color(20, 200, 20, 60));
                 g2d.fill(new Ellipse2D.Double(
                         (move.x * Settings.tileSize) + (double)(Settings.tileSize / 2) - (pointSize / 2),

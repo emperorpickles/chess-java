@@ -1,7 +1,7 @@
 package com.cnkitzmann.chess;
 
 public class Settings {
-    public final static String defaultBoard = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    public final static String defaultBoard = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R";
 
     public final static int tileSize = 120;
     public final static int pieceSize = 70;
