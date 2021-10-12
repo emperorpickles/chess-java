@@ -39,12 +39,22 @@ public class MoveRules {
     //    methods for each piece
     private void Pawn() {
         if (!m.newMove(0, dir.y) && p.getMoved()) {
-            m.newMove(0, 2 * dir.y);
+            m.newMove(0, 2 * dir.y, 'D');
         }
         if (b.getPiece(p.getGridX() - 1, p.getGridY() + dir.y) != null) m.newMove(-1, dir.y);
         if (b.getPiece(p.getGridX() + 1, p.getGridY() + dir.y) != null) m.newMove(1, dir.y);
 
-//        TODO -- Add en passant rules
+//        en passant
+        String[] fenSections = b.getFEN().split("\\s");
+        if (fenSections.length > 1) {
+            String enPassant = fenSections[3];
+            if (!enPassant.contains("-") && (p.getGridY() == 3 || p.getGridY() == 4)) {
+                int x = (enPassant.charAt(0) - 'a') - p.getGridX();
+                if (x >= -1 && x <= 1) {
+                    m.newMove(x, dir.y, 'E');
+                }
+            }
+        }
     }
 
     private void King() {

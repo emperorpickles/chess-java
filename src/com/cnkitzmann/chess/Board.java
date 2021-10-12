@@ -50,6 +50,10 @@ public class Board {
         board[x][y] = null;
     }
 
+    public void removePiece(int x, int y) {
+        board[x][y] = null;
+    }
+
     public boolean getTurn() {
         return whiteTurn;
     }
@@ -64,5 +68,13 @@ public class Board {
 
     public String getPGN() {
         return notationHandler.getPGN();
+    }
+
+    public void updateFEN(Board b, Move m) {
+        notationHandler.fenWriter(b, m);
+    }
+
+    public String getFEN() {
+        return notationHandler.getFen();
     }
 }

@@ -11,7 +11,7 @@ public class Move {
     private final Point curPos;
     private final Point newPos;
     private final boolean takes;
-    private final char castles;
+    private char special;
 
     public Move(Board b, Piece p, Point cp, Point dp) {
         this(b, p, cp, dp, false, ' ');
@@ -21,25 +21,30 @@ public class Move {
         this(b, p, cp, dp, t, ' ');
     }
 
-    public Move(Board b, Piece p, Point cp, Point dp, boolean t, char c) {
+    public Move(Board b, Piece p, Point cp, Point dp, boolean t, char s) {
         this.b = b;
         this.p = p;
         this.curPos = cp;
         this.newPos = dp;
         this.takes = t;
-        this.castles = c;
+        this.special = s;
     }
 
     public void makeMove() {
         b.movePiece(curPos.x, curPos.y, newPos.x, newPos.y);
 
-        switch (castles) {
+        switch (special) {
             case 'K' -> b.movePiece(curPos.x + 3, curPos.y, curPos.x + 1, curPos.y);
             case 'Q' -> b.movePiece(curPos.x - 4, curPos.y, curPos.x - 1, curPos.y);
+            case 'D' -> {
+                if (!p.isWhite()) this.special = 'd';
+            }
+            case 'E' -> b.removePiece(newPos.x, curPos.y);
         }
 
         b.setTurn();
         b.updatePGN(this);
+        b.updateFEN(b, this);
     }
 
     public Point getNewPos() {
@@ -58,8 +63,8 @@ public class Move {
         return this.p.isWhite();
     }
 
-    public char getCastles() {
-        return this.castles;
+    public char getSpecial() {
+        return this.special;
     }
 
     public boolean getTakes() {

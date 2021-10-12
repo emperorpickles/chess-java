@@ -55,7 +55,7 @@ public class MoveHandler {
         return newMove(dx, dy, ' ');
     }
 
-    public boolean newMove(int dx, int dy, char castles) {
+    public boolean newMove(int dx, int dy, char special) {
         Point curPos = new Point(p.getGridX(), p.getGridY());
 
         Point newPos = (Point) curPos.clone();
@@ -64,11 +64,11 @@ public class MoveHandler {
         if (inBounds(newPos)) {
             if (b.getPiece(newPos.x, newPos.y) != null) {
                 if (canTake(newPos)) {
-                    moves.add(new Move(b, p, curPos, newPos, true, castles));
+                    moves.add(new Move(b, p, curPos, newPos, true, special));
                 }
                 return true;
             } else {
-                moves.add(new Move(b, p, curPos, newPos, false, castles));
+                moves.add(new Move(b, p, curPos, newPos, false, special));
             }
         }
         return false;
