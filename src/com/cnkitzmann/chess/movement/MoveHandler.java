@@ -16,12 +16,15 @@ public class MoveHandler {
         b = board;
     }
 
-    public void makeMove(Point pos) {
+    public boolean makeMove(Point pos) {
         Move move = getMove(pos);
+        moves.clear();
         if (move != null) {
             move.makeMove();
+            return true;
+        } else {
+            return false;
         }
-        moves.clear();
     }
 
 

@@ -42,6 +42,7 @@ public class NotationHandler {
 
     public void fenWriter(Board b, Move m) {
         fen = "";
+        StringBuilder strBuilder = new StringBuilder(fen);
 
 //        board state
         int gap = 0;
@@ -51,40 +52,41 @@ public class NotationHandler {
                 if (piece == null) {
                     gap++;
                 } else {
-                    if (gap > 0) fen += String.valueOf(gap);
+                    if (gap > 0) strBuilder.append(gap);
                     gap = 0;
 
-                    if (piece.isWhite()) fen += piece.getType();
-                    else fen += Character.toLowerCase(piece.getType());
+                    if (piece.isWhite()) strBuilder.append(piece.getType());
+                    else strBuilder.append(Character.toLowerCase(piece.getType()));
                 }
             }
-            if (gap > 0) fen += String.valueOf(gap);
+            if (gap > 0) strBuilder.append(gap);
             gap = 0;
-            fen += "/";
+            strBuilder.append("/");
         }
 
 //        current turn
-        if (b.getTurn()) fen += " w";
-        else fen += " b";
+        if (b.getTurn()) strBuilder.append(" w");
+        else strBuilder.append(" b");
 
 //        castling rights
-        fen += " -";
+        strBuilder.append(" -");
 
 //        en passant target square
         if (m.getSpecial() == 'D') {
             String pos = String.valueOf((char) (m.getNewPos().x + 'a')) + '3';
-            fen += ' ' + pos;
+            strBuilder.append(' ').append(pos);
         } else if (m.getSpecial() == 'd') {
             String pos = String.valueOf((char) (m.getNewPos().x + 'a')) + '6';
-            fen += ' ' + pos;
-        } else fen += " -";
+            strBuilder.append(' ').append(pos);
+        } else strBuilder.append(" -");
 
 //        half move clock
-        fen += " -";
+        strBuilder.append(" -");
 
 //        full move counter
-        fen += " -";
+        strBuilder.append(" -");
 
+        fen = strBuilder.toString();
         System.out.println(fen);
     }
 

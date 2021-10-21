@@ -2,9 +2,13 @@ package com.cnkitzmann.chess;
 
 import com.cnkitzmann.chess.movement.MoveHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Renderer extends JPanel {
@@ -13,9 +17,13 @@ public class Renderer extends JPanel {
 
     public Renderer(Board board) {
         b = board;
+        MoveHandler moves = new MoveHandler(b);
+
+        InputAdapter i = new InputAdapter(b, this, moves);
+        addMouseListener(i);
+        addMouseMotionListener(i);
 
         setPreferredSize(new Dimension(Settings.gameWidth, Settings.gameHeight));
-        addMouseListener(new InputAdapter(b, this));
         ta = new JTextArea();
         ta.setEditable(false);
         ta.setLineWrap(true);
@@ -37,10 +45,26 @@ public class Renderer extends JPanel {
 
     private void drawGrid(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        BufferedImage tileSprite;
+        File tileFile;
 
         int tileSize = Settings.tileSize;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
+                if ((x + y) % 2 == 0) {
+                    tileFile = new File("src/com/cnkitzmann/chess/resources/light_tile.png");
+                } else {
+                    tileFile = new File("src/com/cnkitzmann/chess/resources/dark_tile.png");
+                }
+
+                try {
+                    tileSprite = ImageIO.read(tileFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    tileSprite = null;
+                }
+
+                g2d.drawImage(tileSprite, null, x*tileSize, y*tileSize);
                 g2d.setPaint(new Color(20));
                 g2d.drawRect(x*tileSize, y*tileSize, tileSize, tileSize);
             }
@@ -63,9 +87,10 @@ public class Renderer extends JPanel {
             for (int y = 0; y < 8; y++) {
                 if (b.getPiece(x, y) != null) {
                     Piece piece = b.getPiece(x, y);
-                    g2d.setPaint(new Color(piece.color()));
-                    g2d.fill(new Ellipse2D.Double(piece.getX(), piece.getY(), Settings.pieceSize, Settings.pieceSize));
-                    g2d.drawString(String.valueOf(piece.getType()), piece.getX(), piece.getY());
+//                    g2d.setPaint(new Color(piece.color()));
+//                    g2d.fill(new Ellipse2D.Double(piece.getX(), piece.getY(), Settings.pieceSize, Settings.pieceSize));
+                    g2d.drawImage(piece.getSprite(), null, piece.getX(), piece.getY());
+//                    g2d.drawString(String.valueOf(piece.getType()), piece.getX(), piece.getY());
                 }
             }
         }
