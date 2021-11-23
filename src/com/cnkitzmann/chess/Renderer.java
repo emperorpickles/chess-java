@@ -13,7 +13,9 @@ import java.util.ArrayList;
 
 public class Renderer extends JPanel {
     private final Board b;
-    private JTextArea ta;
+    private final JTextArea ta;
+    private final BufferedImage[] tiles = new BufferedImage[2];
+    private double scale;
 
     public Renderer(Board board) {
         b = board;
@@ -24,10 +26,19 @@ public class Renderer extends JPanel {
         addMouseMotionListener(i);
 
         setPreferredSize(new Dimension(Settings.gameWidth, Settings.gameHeight));
+        init();
+
         ta = new JTextArea();
         ta.setEditable(false);
         ta.setLineWrap(true);
         this.add(ta);
+    }
+
+    private void init() {
+        tiles[0] = loadSprite("src/com/cnkitzmann/chess/resources/light_tile.png");
+        tiles[1] = loadSprite("src/com/cnkitzmann/chess/resources/dark_tile.png");
+
+        scale = (double) Settings.tileSize / Settings.pieceSize;
     }
 
     @Override
@@ -43,28 +54,30 @@ public class Renderer extends JPanel {
         repaint();
     }
 
+    private BufferedImage loadSprite(String filePath) {
+        BufferedImage sprite;
+
+        try {
+            sprite = ImageIO.read(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            sprite = null;
+        }
+        return sprite;
+    }
+
     private void drawGrid(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        BufferedImage tileSprite;
-        File tileFile;
 
         int tileSize = Settings.tileSize;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if ((x + y) % 2 == 0) {
-                    tileFile = new File("src/com/cnkitzmann/chess/resources/light_tile.png");
+                    g2d.drawImage(tiles[0], x*tileSize, y*tileSize, Settings.tileSize, Settings.tileSize, null);
                 } else {
-                    tileFile = new File("src/com/cnkitzmann/chess/resources/dark_tile.png");
+                    g2d.drawImage(tiles[1], x*tileSize, y*tileSize, Settings.tileSize, Settings.tileSize, null);
                 }
 
-                try {
-                    tileSprite = ImageIO.read(tileFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    tileSprite = null;
-                }
-
-                g2d.drawImage(tileSprite, null, x*tileSize, y*tileSize);
                 g2d.setPaint(new Color(20));
                 g2d.drawRect(x*tileSize, y*tileSize, tileSize, tileSize);
             }
@@ -87,10 +100,7 @@ public class Renderer extends JPanel {
             for (int y = 0; y < 8; y++) {
                 if (b.getPiece(x, y) != null) {
                     Piece piece = b.getPiece(x, y);
-//                    g2d.setPaint(new Color(piece.color()));
-//                    g2d.fill(new Ellipse2D.Double(piece.getX(), piece.getY(), Settings.pieceSize, Settings.pieceSize));
-                    g2d.drawImage(piece.getSprite(), null, piece.getX(), piece.getY());
-//                    g2d.drawString(String.valueOf(piece.getType()), piece.getX(), piece.getY());
+                    g2d.drawImage(piece.getSprite(), piece.getX(), piece.getY(), (int) (Settings.pieceSize * scale), (int) (Settings.pieceSize * scale), null);
                 }
             }
         }
@@ -107,7 +117,7 @@ public class Renderer extends JPanel {
                 g2d.fill(new Ellipse2D.Double(
                         (move.x * Settings.tileSize) + (double)(Settings.tileSize / 2) - (pointSize / 2),
                         (move.y * Settings.tileSize) + (double)(Settings.tileSize / 2) - (pointSize / 2),
-                        pointSize, pointSize
+                        pointSize * scale, pointSize * scale
                 ));
             }
         }
