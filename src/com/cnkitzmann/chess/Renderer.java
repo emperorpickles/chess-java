@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class Renderer extends JPanel {
     private final Board b;
     private final PiecesHandler ph;
+    private final MoveHandler mh;
     private final JTextArea ta;
     private final BufferedImage[] tiles = new BufferedImage[2];
     private double scale;
@@ -22,9 +23,9 @@ public class Renderer extends JPanel {
     public Renderer(Board board, PiecesHandler piecesHandler) {
         b = board;
         ph = piecesHandler;
-        MoveHandler moves = new MoveHandler(b);
+        mh = new MoveHandler(b);
 
-        InputAdapter i = new InputAdapter(b, this, moves);
+        InputAdapter i = new InputAdapter(b, this, mh);
         addMouseListener(i);
         addMouseMotionListener(i);
 
@@ -111,7 +112,7 @@ public class Renderer extends JPanel {
 
     private void drawPossibleMoves(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        ArrayList<Point> validMoves = MoveHandler.getMovePoints();
+        ArrayList<Point> validMoves = mh.getMovePoints();
         double pointSize = Settings.pieceSize * 0.6;
 
         if (validMoves != null) {

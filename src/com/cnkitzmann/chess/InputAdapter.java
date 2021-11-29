@@ -11,17 +11,17 @@ import java.awt.event.MouseMotionListener;
 public class InputAdapter implements MouseListener, MouseMotionListener {
     private final Board b;
     private final Renderer r;
-    private final MoveHandler m;
+    private final MoveHandler mh;
 
     private Piece p;
 
     private boolean moving = false;
     private boolean dragging = false;
 
-    public InputAdapter(Board board, Renderer renderer, MoveHandler moves) {
+    public InputAdapter(Board board, Renderer renderer, MoveHandler moveHandler) {
         b = board;
         r = renderer;
-        m = moves;
+        mh = moveHandler;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class InputAdapter implements MouseListener, MouseMotionListener {
         p = b.getPiece(gridPos.x, gridPos.y);
 
         if (p != null && p.isWhite() == b.getTurn()) {
-            m.getPieceMoves(p);
+            mh.getPieceMoves(p);
         }
     }
 
@@ -45,12 +45,13 @@ public class InputAdapter implements MouseListener, MouseMotionListener {
     public void mouseReleased(MouseEvent e) {
         dragging = false;
         if (p != null) {
-            boolean moved = m.makeMove(mouseGridPos(e.getPoint()));
+            boolean moved = mh.makeMove(mouseGridPos(e.getPoint()));
             if (!moved) {
                 p.setPos(p.getGridX(), p.getGridY());
             }
             p = null;
         }
+        mh.clearMovePoints();
         r.redraw();
     }
 
@@ -91,10 +92,11 @@ public class InputAdapter implements MouseListener, MouseMotionListener {
     private void movePiece(Piece piece, int x, int y) {
         if (!moving) {
             System.out.println("starting move");
-            m.getPieceMoves(piece);
+            mh.getPieceMoves(piece);
         } else {
             System.out.println("finishing move");
-            m.makeMove(new Point(x, y));
+            mh.makeMove(new Point(x, y));
+            mh.clearMovePoints();
         }
         moving = !moving;
         r.redraw();

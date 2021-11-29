@@ -7,11 +7,13 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class MoveHandler {
-    private static ArrayList<Move> moves;
+    private final ArrayList<Move> moves;
+    private final ArrayList<Point> movePoints;
     private final Board b;
 
     public MoveHandler(Board board) {
         moves = new ArrayList<>();
+        movePoints = new ArrayList<>();
         b = board;
     }
 
@@ -30,17 +32,21 @@ public class MoveHandler {
     //    return moves for given piece type
     public void getPieceMoves(Piece piece) {
         moves.addAll(piece.getMoves());
-    }
 
-//    convert list of moves to list of points
-    public static ArrayList<Point> getMovePoints() {
-        if (moves.isEmpty()) return null;
-
-        ArrayList<Point> movePoints = new ArrayList<>();
+        movePoints.clear();
         for (Move move : moves) {
             movePoints.add(move.getNewPos());
         }
-        return movePoints;
+    }
+
+//    convert list of moves to list of points
+    public ArrayList<Point> getMovePoints() {
+        if (movePoints.isEmpty()) return null;
+        else return movePoints;
+    }
+
+    public void clearMovePoints() {
+        movePoints.clear();
     }
 
 //    get move that corresponds to a given position
