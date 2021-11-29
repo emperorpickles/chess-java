@@ -9,29 +9,24 @@ each turn if the piece has moved this list is updated to reflect its new positio
 move list should take other pieces into consideration: yes/no?
 */
 
-import java.util.ArrayList;
+import com.cnkitzmann.chess.PiecesHandler;
 
 public class Queen extends Piece {
-    private ArrayList<Move> moves;
 
-    public Queen(int x, int y, boolean isWhite) {
-        super(x, y, isWhite);
+    public Queen(int x, int y, boolean isWhite, PiecesHandler ph) {
+        super(x, y, isWhite, 'q', ph);
     }
 
-    private void findMoves() {
+    protected void generateMoves() {
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j < 8; j++) {
-                if (m.newMove(lines[i].x * j, lines[i].y * j)) break;
+                if (newMove(lines[i].x * j, lines[i].y * j)) break;
             }
         }
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j < 8; j++) {
-                if (m.newMove(diagonals[i].x * j, diagonals[i].y * j)) break;
+                if (newMove(diagonals[i].x * j, diagonals[i].y * j)) break;
             }
         }
-    }
-
-    private ArrayList<Move> getMoves() {
-        return moves;
     }
 }
