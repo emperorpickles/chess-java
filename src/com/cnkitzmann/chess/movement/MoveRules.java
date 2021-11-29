@@ -7,6 +7,9 @@ import java.awt.*;
 
 import static java.lang.Math.abs;
 
+// TODO - rework move rules for each piece into respective Piece classes
+// TODO - eventually remove this class entirely
+
 public class MoveRules {
     private static Point dir;
     private final Board b;
