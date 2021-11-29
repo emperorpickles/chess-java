@@ -1,6 +1,7 @@
 package com.cnkitzmann.chess;
 
 import com.cnkitzmann.chess.movement.MoveHandler;
+import com.cnkitzmann.chess.pieces.Piece;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -36,7 +37,7 @@ public class InputAdapter implements MouseListener, MouseMotionListener {
         p = b.getPiece(gridPos.x, gridPos.y);
 
         if (p != null && p.isWhite() == b.getTurn()) {
-            m.findValidMoves(p);
+            m.getPieceMoves(p);
         }
     }
 
@@ -90,7 +91,7 @@ public class InputAdapter implements MouseListener, MouseMotionListener {
     private void movePiece(Piece piece, int x, int y) {
         if (!moving) {
             System.out.println("starting move");
-            m.findValidMoves(piece);
+            m.getPieceMoves(piece);
         } else {
             System.out.println("finishing move");
             m.makeMove(new Point(x, y));

@@ -10,8 +10,9 @@ public class ChessGame extends JFrame {
     }
 
     private void initUI() {
-        Board board = new Board();
-        add(new Renderer(board));
+        PiecesHandler piecesHandler = new PiecesHandler();
+        Board board = new Board(piecesHandler);
+        add(new Renderer(board, piecesHandler));
 
         setSize(Settings.gameWidth + 17, Settings.gameHeight + 40);
         setTitle("ChessGame");

@@ -1,6 +1,7 @@
 package com.cnkitzmann.chess;
 
 import com.cnkitzmann.chess.movement.Move;
+import com.cnkitzmann.chess.pieces.Piece;
 
 public class NotationHandler {
     private String pgn;
@@ -55,7 +56,7 @@ public class NotationHandler {
                     if (gap > 0) strBuilder.append(gap);
                     gap = 0;
 
-                    if (piece.isWhite()) strBuilder.append(piece.getType());
+                    if (piece.isWhite()) strBuilder.append(Character.toUpperCase(piece.getType()));
                     else strBuilder.append(Character.toLowerCase(piece.getType()));
                 }
             }

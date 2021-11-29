@@ -1,7 +1,7 @@
 package com.cnkitzmann.chess.movement;
 
 import com.cnkitzmann.chess.Board;
-import com.cnkitzmann.chess.Piece;
+import com.cnkitzmann.chess.pieces.Piece;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,31 +9,30 @@ import java.util.ArrayList;
 public class MoveHandler {
     private static ArrayList<Move> moves;
     private final Board b;
-    private Piece p;
 
     public MoveHandler(Board board) {
         moves = new ArrayList<>();
         b = board;
     }
 
+//    attempt to execute move for given position
     public boolean makeMove(Point pos) {
-        Move move = getMove(pos);
+        Move move = getMoveFromPoint(pos);
         moves.clear();
         if (move != null) {
-            move.makeMove();
+            move.makeMove(b);
             return true;
         } else {
             return false;
         }
     }
 
-
     //    return moves for given piece type
-    public void findValidMoves(Piece piece) {
-        this.p = piece;
-        new MoveRules(b, piece, this);
+    public void getPieceMoves(Piece piece) {
+        moves.addAll(piece.getMoves());
     }
 
+//    convert list of moves to list of points
     public static ArrayList<Point> getMovePoints() {
         if (moves.isEmpty()) return null;
 
@@ -44,47 +43,13 @@ public class MoveHandler {
         return movePoints;
     }
 
-    public Move getMove(Point point) {
+//    get move that corresponds to a given position
+    public Move getMoveFromPoint(Point point) {
         for (Move move : moves) {
             if (point.equals(move.getNewPos())) {
                 return move;
             }
         }
         return null;
-    }
-
-
-    public boolean newMove(int dx, int dy) {
-        return newMove(dx, dy, ' ');
-    }
-
-    public boolean newMove(int dx, int dy, char special) {
-        Point curPos = new Point(p.getGridX(), p.getGridY());
-
-        Point newPos = (Point) curPos.clone();
-        newPos.translate(dx, dy);
-
-        if (inBounds(newPos)) {
-            if (b.getPiece(newPos.x, newPos.y) != null) {
-                if (canTake(newPos)) {
-                    moves.add(new Move(b, p, curPos, newPos, true, special));
-                }
-                return true;
-            } else {
-                moves.add(new Move(b, p, curPos, newPos, false, special));
-            }
-        }
-        return false;
-    }
-
-    private boolean inBounds(Point newPos) {
-        return newPos.x >= 0 && newPos.y >= 0 && newPos.x < 8 && newPos.y < 8;
-    }
-
-    private boolean canTake(Point newPos) {
-        if (b.getPiece(newPos.x, newPos.y).isWhite() != p.isWhite()) {
-            return p.getType() != 'P' || p.getGridX() != newPos.x;
-        }
-        return false;
     }
 }

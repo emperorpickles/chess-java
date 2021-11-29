@@ -1,6 +1,7 @@
 package com.cnkitzmann.chess;
 
 import com.cnkitzmann.chess.movement.MoveHandler;
+import com.cnkitzmann.chess.pieces.Piece;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,12 +14,14 @@ import java.util.ArrayList;
 
 public class Renderer extends JPanel {
     private final Board b;
+    private final PiecesHandler ph;
     private final JTextArea ta;
     private final BufferedImage[] tiles = new BufferedImage[2];
     private double scale;
 
-    public Renderer(Board board) {
+    public Renderer(Board board, PiecesHandler piecesHandler) {
         b = board;
+        ph = piecesHandler;
         MoveHandler moves = new MoveHandler(b);
 
         InputAdapter i = new InputAdapter(b, this, moves);
@@ -98,8 +101,8 @@ public class Renderer extends JPanel {
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (b.getPiece(x, y) != null) {
-                    Piece piece = b.getPiece(x, y);
+                if (ph.getPieceAtCoord(x, y) != null) {
+                    Piece piece = ph.getPieceAtCoord(x, y);
                     g2d.drawImage(piece.getSprite(), piece.getX(), piece.getY(), (int) (Settings.pieceSize * scale), (int) (Settings.pieceSize * scale), null);
                 }
             }
